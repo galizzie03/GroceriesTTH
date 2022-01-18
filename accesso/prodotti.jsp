@@ -7,6 +7,8 @@
             String tmp = (String) request.getSession().getAttribute("email");
             if (tmp==null)
                 response.sendRedirect("index.html");
+            else
+
             out.print("<h1>Bentornato, "+tmp+".</h1>");
         %>
         

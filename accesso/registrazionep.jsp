@@ -10,14 +10,17 @@
             <input type="text" id="email" name="email" placeholder="Email"><br>
             <input type="password" id="password" name="password" placeholder="Password"><br>
             <input type="text" id="nome" name="nome" placeholder="Nome"><br>
-            <input type="text" id="cognome" name="cognome" placeholder="Cognome"><br>
-            <input type="text" id="iva" name="iva" placeholder="Partita IVA"><br><br>
+            <input type="text" id="cognome" name="cognome" placeholder="Cognome"><br><br>
+            Lasciare i seguenti campi vuoti se si è un cliente.<br>
+            <input type="text" id="iva" name="iva" placeholder="Partita IVA"><br>
+            <input type="text" id="supermercato" name="supermercato" placeholder="Supermercato"><br>
+            <input type="text" id="indirizzo" name="indirizzo" placeholder="Indirizzo"><br><br>
             <input type="submit" id="rp" name="rp" value="Registrati">
         </form>
         Sei già registrato? accedi <a href="accessop.jsp">qui</a>!
     
         <%  
-            String email, password, nome, cognome, iva, Driver="net.ucanaccess.jdbc.UcanaccessDriver";
+            String email, password, nome, cognome, iva, supermercato, indirizzo, Driver="net.ucanaccess.jdbc.UcanaccessDriver";
             Connection connection;
 
             try{
@@ -34,18 +37,20 @@
                 nome=request.getParameter("nome");
                 cognome=request.getParameter("cognome");
                 iva=request.getParameter("iva");
-                String query="INSERT INTO Proprietari (email, password, nome, cognome, partitaiva) VALUES ('"+email+"','"+password+"','"+nome+"','"+cognome+"','"+iva+"')";
+                supermercato=request.getParameter("supermercato");
+                indirizzo=request.getParameter("indirizzo");
+                String query="INSERT INTO Proprietari (email, password, nome, cognome, partitaiva, supermercato, indirizzo) VALUES ('"+email+"','"+password+"','"+nome+"','"+cognome+"','"+iva+"','"+supermercato+"','"+indirizzo+"')";
                 String controllo = "SELECT email FROM Proprietari WHERE email = '"+email+"';"; 
                 Statement statement=connection.createStatement();
                 ResultSet resultSet=statement.executeQuery(controllo);
                 if (resultSet.next()&&email!=null)
                     out.println("<p>Questa email è già associata ad un account esistente</p>");
-                else if ((email!="")&&(password!="")&&(nome!="")&&(cognome!="")&&(iva!="")&&(email!="null")&&(password!=null)&&(nome!=null)&&(cognome!=null)&&(iva!=null))
+                else if ((email!="")&&(password!="")&&(nome!="")&&(cognome!="")&&(iva!="")&&(supermercato!="")&&(indirizzo!="")&&(email!=null)&&(password!=null)&&(nome!=null)&&(cognome!=null)&&(iva!=null)&&(supermercato!=null)&&(indirizzo!=null))
                 {
                     statement.executeUpdate(query);
                     out.println("<p>Registrazione compiuta con successo!</p>");
                 }
-                else if ((email!="null")&&(password!=null)&&(nome!=null)&&(cognome!=null)&&(iva!=null))
+                else if ((email!=null)&&(password!=null)&&(nome!=null)&&(cognome!=null)&&(iva!=null)&&(supermercato!=null)&&(indirizzo!=null))
                     out.println("<p>Dati mancanti</p>");
             }
             catch(Exception e){

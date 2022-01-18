@@ -13,9 +13,11 @@
         </form>
         Non sei registrato? Registrati <a href="registrazionec.jsp">qui</a>!
     
-        <%  
+        <%
             String email, password, Driver = "net.ucanaccess.jdbc.UcanaccessDriver";
             Connection connection;
+
+            HttpSession s= request.getSession();
 
             try{
                 Class.forName(Driver);
@@ -33,9 +35,13 @@
                 ResultSet resultSet=statement.executeQuery(query);
 
                 if (resultSet.next())
-                    response.sendRedirect("accessoc.html");
+                { 
+                    String dataValue=email;
+                    s.setAttribute("email",dataValue);
+                    response.sendRedirect("browse.jsp");
+                }
                 else if((email!=null)&&(password!=null))
-                        out.println("<p>L'email e/o la password contengono degli errori</p>");
+                        out.println("<p>L'email o la password contengono degli errori</p>");
             }
             catch(Exception e){
                 out.println(e);
