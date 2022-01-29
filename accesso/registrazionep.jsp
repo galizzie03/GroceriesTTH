@@ -32,23 +32,35 @@
 
             try{
                 connection=DriverManager.getConnection("jdbc:ucanaccess://" + request.getServletContext().getRealPath("/") + "Credenziali.accdb");
-                email=request.getParameter("email");
-                password=request.getParameter("password");
-                nome=request.getParameter("nome");
-                cognome=request.getParameter("cognome");
-                iva=request.getParameter("iva");
+                email=      request.getParameter("email");
+                password=   request.getParameter("password");
+                nome=       request.getParameter("nome");
+                cognome=    request.getParameter("cognome");
+                iva=        request.getParameter("iva");
                 supermercato=request.getParameter("supermercato");
-                indirizzo=request.getParameter("indirizzo");
-                String query="INSERT INTO Proprietari (email, password, nome, cognome, partitaiva, supermercato, indirizzo) VALUES ('"+email+"','"+password+"','"+nome+"','"+cognome+"','"+iva+"','"+supermercato+"','"+indirizzo+"')";
-                String controllo = "SELECT email FROM Proprietari WHERE email = '"+email+"';"; 
+                indirizzo=  request.getParameter("indirizzo");
+                String queryp="INSERT INTO Proprietari (email, password, nome, cognome, partitaiva, supermercato, indirizzo) VALUES ('"+email+"','"+password+"','"+nome+"','"+cognome+"','"+iva+"','"+supermercato+"','"+indirizzo+"')";
+                String queryc="INSERT INTO Clienti (email, password, nome, cognome) VALUES ('"+email+"','"+password+"','"+nome+"','"+cognome+"')";
+                String controllop = "SELECT email FROM Proprietari WHERE email = '"+email+"';";
+                String controlloc = "SELECT email FROM Clienti WHERE email = '"+email+"';";
                 Statement statement=connection.createStatement();
-                ResultSet resultSet=statement.executeQuery(controllo);
+                ResultSet resultSet=statement.executeQuery(controllop);
                 if (resultSet.next()&&email!=null)
+                {
                     out.println("<p>Questa email è già associata ad un account esistente</p>");
+                    statement.executeUpdate(controlloc);
+                }
+                else if (resultSet.next()&&email!=null)
+                    out.println("<p>Questa email è già associata ad un account esistente</p>");
+                else if ((email!="")&&(password!="")&&(nome!="")&&(cognome!="")&&(iva=="")&&(supermercato=="")&&(indirizzo=="")&&(email!=null)&&(password!=null)&&(nome!=null)&&(cognome!=null)&&(iva==null)&&(supermercato==null)&&(indirizzo==null))
+                {
+                    statement.executeUpdate(queryc);
+                    out.println("<p>Registrazione cliente compiuta con successo!</p>");
+                }
                 else if ((email!="")&&(password!="")&&(nome!="")&&(cognome!="")&&(iva!="")&&(supermercato!="")&&(indirizzo!="")&&(email!=null)&&(password!=null)&&(nome!=null)&&(cognome!=null)&&(iva!=null)&&(supermercato!=null)&&(indirizzo!=null))
                 {
-                    statement.executeUpdate(query);
-                    out.println("<p>Registrazione compiuta con successo!</p>");
+                    statement.executeUpdate(queryp);
+                    out.println("<p>Registrazione proprietario compiuta con successo!</p>");
                 }
                 else if ((email!=null)&&(password!=null)&&(nome!=null)&&(cognome!=null)&&(iva!=null)&&(supermercato!=null)&&(indirizzo!=null))
                     out.println("<p>Dati mancanti</p>");
