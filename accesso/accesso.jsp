@@ -39,7 +39,7 @@
                 {
                     String dataValue = email;
                     s.setAttribute("email",dataValue);
-                    response.sendRedirect("prodotti.jsp");
+                    response.sendRedirect("supermercati.jsp");
                 }
                 else
                 {
@@ -60,5 +60,5 @@
             finally{
             }
         %>
-    </b ody>
+    </body>
 </html>
