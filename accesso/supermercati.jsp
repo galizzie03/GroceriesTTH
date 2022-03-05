@@ -20,6 +20,8 @@
             <td>Indirizzo</td>
         </tr>
         <%
+        
+        HttpSession s = request.getSession();
         String Driver="net.ucanaccess.jdbc.UcanaccessDriver";
             Connection connection;
             try{
@@ -30,7 +32,7 @@
             }
             try{
                 connection=DriverManager.getConnection("jdbc:ucanaccess://" + request.getServletContext().getRealPath("/") + "Credenziali.accdb");
-                String controllo = "SELECT * FROM Supermercati;";
+                String controllo = "SELECT Supermercati.Nome, Supermercati.Indirizzo FROM Supermercati, Utenti WHERE Supermercati.PartitaIVA=Utenti.PartitaIVA AND Email='"+tmp+"'";
                 Statement statement=connection.createStatement();
                 ResultSet resultSet=statement.executeQuery(controllo);
                 while(resultSet.next())
@@ -39,6 +41,8 @@
                     out.println("<td>"+resultSet.getString("Indirizzo")+"</td>");
                 }
                 out.println("</table>");
+                String dataValue = tmp;
+                s.setAttribute("email",dataValue);
                 resultSet.close();
                 statement.close();
                 connection.close();
