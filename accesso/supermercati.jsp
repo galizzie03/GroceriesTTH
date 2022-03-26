@@ -6,11 +6,11 @@
 <html>
     <body>
         <table border="2">
-        <a href="index.html">Homepage</a><br>
+        <a href="index.html">Homepage </a><a href="logout.jsp">Esci</a><br>
         <%
             String tmp = (String) request.getSession().getAttribute("email");
             if (tmp==null)
-                response.sendRedirect("index.html");
+                response.sendRedirect("accesso.jsp");
             else
                 out.print("<h1>Bentornato, "+tmp+". Seleziona il tuo supermercato.</h1>");
         %>

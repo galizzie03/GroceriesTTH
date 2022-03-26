@@ -4,7 +4,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
     <body>
-        <a href="index.html">Homepage</a><br>
+        <a href="index.html">Homepage </a><a href="logout.jsp">Esci</a><br>
         <h1>Inserimento prodotti</h1>
         <form action="gestionep.jsp" method="GET">
             <input type="text" id="nome" name="nome" placeholder="Nome"><br>
