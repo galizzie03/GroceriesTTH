@@ -8,6 +8,7 @@
         <table border="2">
         <a href="index.html">Homepage </a><a href="logout.jsp">Esci</a><br>
         <%
+            HttpSession s = request.getSession();
             String tmp = (String) request.getSession().getAttribute("email");
             if (tmp==null)
                 response.sendRedirect("accesso.jsp");
@@ -20,9 +21,7 @@
             <td>Indirizzo</td>
         </tr>
         <%
-        
-        HttpSession s = request.getSession();
-        String Driver="net.ucanaccess.jdbc.UcanaccessDriver";
+            String Driver="net.ucanaccess.jdbc.UcanaccessDriver";
             Connection connection;
             try{
                 Class.forName(Driver);

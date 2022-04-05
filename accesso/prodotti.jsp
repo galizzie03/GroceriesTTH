@@ -34,39 +34,40 @@
                 out.println("Impossibile caricare il Driver Ucanaccess");
             }
             try{
-                connection=DriverManager.getConnection("jdbc:ucanaccess://" + request.getServletContext().getRealPath("/") + "Credenziali.accdb");
-                String codice=request.getParameter("Codice");
-                String nome=request.getParameter("Nome");
-                String marca=request.getParameter("Marca");
-                String descrizione=request.getParameter("Descrizione");
-                double prezzo=Double.valueOf(request.getParameter("Prezzo"));
-                int quantita=Integer.valueOf(request.getParameter("Quantita"));
-                String inserimento = "INSERT INTO Prodotti (Codice,Nome,Marca,Descrizione,Prezzo,Quantita) VALUES ('"+codice+"','"+nome+"','"+marca+"','"+descrizione+"','"+prezzo+"','"+quantita+"')";
-                String controllo = "SELECT * FROM Prodotti WHERE Supermercato='"+supermercato+"'";
+                connection=DriverManager.getConnection("jdbc:ucanaccess://"+request.getServletContext().getRealPath("/") + "Credenziali.accdb");
+                String mostra = "SELECT Codice,Nome,Marca,Descrizione,Prezzo,Quantita FROM Prodotti WHERE Supermercato='"+supermercato+"'";
                 Statement statement=connection.createStatement();
-                ResultSet resultSet=statement.executeQuery(controllo);
+                ResultSet resultSet=statement.executeQuery(mostra);
                 while(resultSet.next())
                 {
                     out.println("<tr><td>"+resultSet.getString("Codice")+"</td>");
                     out.println("<td>"+resultSet.getString("Nome")+"</td>");
                     out.println("<td>"+resultSet.getString("Marca")+"</td>");
                     out.println("<td>"+resultSet.getString("Descrizione")+"</td>");
-                    out.println("<td>"+resultSet.getString("Prezzo")+"</td>");
+                    out.println("<td>€"+resultSet.getString("Prezzo")+"</td>");
                     out.println("<td>"+resultSet.getString("Quantita")+"</td></tr>");
                 }
-        %>
-            <form action="prodotti.jsp" method="GET">
-            <tr><td><input type="text" id="codice" name="codice" placeholder="codice"></td>
-            <td><input type="text" id="nome" name="nome" placeholder="nome"></td>
-            <td><input type="text" id="marca" name="marca" placeholder="marca"></td>
-            <td><input type="text" id="descrizione" name="descrizione" placeholder="descrizione"></td>
-            <td><input type="number" id="prezzo" name="prezzo" placeholder="prezzo"></td>
-            <td><input type="number" id="quantita" name="quantita" placeholder="quantita"></td></tr>
-            </table>
-            <input type="submit" id="inserimentoprodotti" name="inserimentoprodotti" value="inserimentoprodotti">
+
+            out.println("<form action='prodotti.jsp?nome="+supermercato+"&?PartitaIVA="+tmp+" method='POST'>");
+            %>
+                <tr><td></td>
+                <td><input type="text" id="nomeprodotto" name="nomeprodotto" placeholder="Nome"></td>
+                <td><input type="text" id="marca" name="marca" placeholder="Marca"></td>
+                <td><input type="text" id="descrizione" name="descrizione" placeholder="Descrizione"></td>
+                <td><input type="number" id="prezzo" name="prezzo" placeholder="Prezzo"></td>
+                <td><input type="number" id="quantita" name="quantita" placeholder="Quantità"></td></tr>
+                </table><br>
+                <input type="submit" id="inserimentoprodotti" name="inserimentoprodotti" value="Inserisci prodotto">
             </form>
         <%
-            String dataValue = tmp;
+            String nomeprodotto=request.getParameter("nomeprodotto");
+            String marca=request.getParameter("marca");
+            String descrizione=request.getParameter("descrizione");
+            double prezzo=Double.parseDouble(request.getParameter("prezzo"));
+            int quantita=Integer.parseInt(request.getParameter("quantita"));
+            String inserimento="INSERT INTO Prodotti (Nome,Marca,Descrizione,Prezzo,Quantita,Supermercato) VALUES ('"+nomeprodotto+"','"+marca+"','"+descrizione+"','"+prezzo+"','"+quantita+"','"+supermercato+"')";
+            statement.executeUpdate(inserimento);
+            String dataValue=tmp;
             s.setAttribute("email",dataValue);
             resultSet.close();
             statement.close();
@@ -79,6 +80,6 @@
                 System.out.println("Connessione riuscita"); 
             }
         %>
-        <br><a href="supermercati.jsp">Torna ai supermercati</a><br>
+        <br><br><a href="supermercati.jsp">Torna ai supermercati</a>
     </body>
 </html>
