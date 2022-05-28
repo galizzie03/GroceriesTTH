@@ -15,7 +15,7 @@
             <input type="text" id="iva" name="iva" placeholder="Partita IVA"><br>
             <input type="submit" id="rp" name="rp" value="Registrati">
         </form>
-        Sei già registrato? accedi <a href="accesso.jsp">qui</a>!
+        Sei già registrato? accedi <a href="login.jsp">qui</a>!
     
         <%  
             String email, password, nome, cognome, iva, Driver="net.ucanaccess.jdbc.UcanaccessDriver";
